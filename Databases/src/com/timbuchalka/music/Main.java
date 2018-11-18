@@ -13,13 +13,22 @@ public class Main {
             return;
         }
 
-        List<Artist> artists = datasource.queryArtists();
+        List<Artist> artists = datasource.queryArtists(Datasource.ORDER_BY_ASC);
         if(artists == null) {
             System.out.println("No artists loaded!");
             return;
         }
         for(Artist artist : artists) {
             System.out.println("ID = " + artist.getId() + ", Name = " + artist.getName());
+        }
+
+        List<String> albumsForArtist = datasource.queryAlbumsForArtist("Pink Floyd", Datasource.ORDER_BY_DESC);
+        if(albumsForArtist == null) {
+            System.out.println("No albums for this artist!");
+            return;
+        }
+        for(String album : albumsForArtist) {
+            System.out.println(album);
         }
 
         datasource.closeConnection();
