@@ -5,6 +5,7 @@ import com.timbuchalka.music.model.Datasource;
 import com.timbuchalka.music.model.SongArtist;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -32,12 +33,12 @@ public class Main {
             System.out.println(album);
         }
 
-        List<SongArtist> songArtists = datasource.queryArtistsForSong("Go Your Own Way", Datasource.ORDER_BY_DESC);
-        if(songArtists == null) {
+        List<SongArtist> songArtists1 = datasource.queryArtistsForSong("Go Your Own Way", Datasource.ORDER_BY_DESC);
+        if(songArtists1 == null) {
             System.out.println("Couldn't find the artist for the song");
         }
 
-        for(SongArtist songArtist : songArtists) {
+        for(SongArtist songArtist : songArtists1) {
             System.out.println("Artist name = " + songArtist.getArtistName() +
             " Album name = " + songArtist.getAlbumName() +
             " Track = " + songArtist.getTrack());
@@ -49,6 +50,21 @@ public class Main {
         System.out.println("Number of songs is: " + count);
 
         datasource.createViewForSongArtists();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a song title: ");
+        String title = scanner.nextLine();
+        List<SongArtist> songArtists2 = datasource.querySongInfoView(title);
+
+        if(songArtists2.isEmpty()) {
+            System.out.println("Couldn't find the artist for the song");
+        }
+
+        for(SongArtist songArtist : songArtists2) {
+            System.out.println("FROM VIEW Artist name = " + songArtist.getArtistName() +
+                    " Album name = " + songArtist.getAlbumName() +
+                    " Track = " + songArtist.getTrack());
+        }
 
         datasource.closeConnection();
     }
